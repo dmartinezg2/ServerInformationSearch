@@ -47,7 +47,7 @@ func whoIsProccesor(whoisRaw string) []string {
 	Country := ""
 	Updated := ""
 	lineas := strings.Split(whoisRaw, "\n")
-	fmt.Println(whoisRaw)
+	//fmt.Println(whoisRaw) // Se puede imprimir la respuesta del who is
 	for i := 0; i < len(lineas)-1; i++ {
 		if strings.Contains(lineas[i], "OrgName:") == true {
 			contain := strings.Split(lineas[i], ":")
@@ -134,7 +134,8 @@ func AllServers(ctx *fasthttp.RequestCtx) {
 	down := false
 	//Recorre los endpoints del dominio
 	endpoints := s.Endpoints
-	sslGradeComparator := 8
+	sslGradeComparator := 8 //PAra tener el referente de la ssl grade a comparar.
+
 	for i := 0; i <= len(endpoints)-1; i++ {
 		adrss := endpoints[i].IPAddress
 		whoisRaw, err := whois.Whois(adrss)
@@ -168,57 +169,9 @@ func AllServers(ctx *fasthttp.RequestCtx) {
 	webReader.ResetTitle()
 	webReader.ResetLogo()
 	dominio = Response{ServerList: servers, ServersChanged: srvrChanged, SslGrade: lowestSslGrade, PreviousSslGrade: prvSslGrade, Logo: logo, Title: ttl, IsDown: down}
+
+	ctx.Response.Header.Set("Content-Type", "application/json; charset=UTF-8")
+	ctx.Response.Header.Set("Access-Control-Allow-Origin", "*")
+
 	json.NewEncoder(ctx).Encode(dominio)
-}
-
-//AllServers2 : funcion que procesa la informacion del dominio ingresado
-func AllServers2() Response {
-	fmt.Println("Endpoint Hit: Servidores ")
-	//llama al metodo de la clase lectorApi que devulve el json con la info del dominio
-	s, err := webReader.GetServidores(urlGlobal)
-	if err != nil {
-		fmt.Println(err)
-	}
-	var servers []Server
-	var dominio Response
-	var srvrChanged bool
-	var lowestSslGrade string
-	var prvSslGrade string
-	down := false
-	//Recorre los endpoints del dominio
-	endpoints := s.Endpoints
-	sslGradeComparator := 8
-	for i := 0; i <= len(endpoints)-1; i++ {
-		adrss := endpoints[i].IPAddress
-		whoisRaw, err := whois.Whois(adrss)
-		if err != nil {
-			down = true
-			fmt.Println(err)
-		}
-		ssgrade := endpoints[i].Grade
-		numSslgrade := sslValue(ssgrade)
-		if (sslGradeComparator > numSslgrade) == true {
-			lowestSslGrade = ssgrade
-			sslGradeComparator = numSslgrade
-		}
-		whoIsProcessed := whoIsProccesor(whoisRaw)
-		country := whoIsProcessed[1]
-		ownr := whoIsProcessed[0]
-		lastUpdate := whoIsProcessed[2]
-		fmt.Println("Last update info", lastUpdate)
-		srvr := Server{Address: adrss, SslGrade: ssgrade, Country: country, Owner: ownr}
-		servers = append(servers, srvr)
-		srvrChanged = didServerUpdate(lastUpdate)
-		prvSslGrade = persistence.PreviousGrade(urlGlobal)
-
-	}
-	//timeHaceUnaHora := time.Now().Add(time.Hour * -1) // le manda el tiempo hace una hora para que considere el booleano d euna ohora o antes atras.
-	tiempoencadena := time.Now().Format(time.RFC3339)
-
-	persistence.InsertItems(urlGlobal, lowestSslGrade, tiempoencadena)
-	logo := webReader.FindLogo(urlGlobal)
-	ttl := webReader.FindTTL(urlGlobal)
-	dominio = Response{ServerList: servers, ServersChanged: srvrChanged, SslGrade: lowestSslGrade, PreviousSslGrade: prvSslGrade, Logo: logo, Title: ttl, IsDown: down}
-	return dominio
-
 }

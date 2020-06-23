@@ -39,33 +39,9 @@ func GetItems(ctx *fasthttp.RequestCtx) {
 		fmt.Printf("%s\n", dominio)
 	}
 	rta := Rta{items}
+	ctx.Response.Header.Set("Content-Type", "application/json; charset=UTF-8")
+	ctx.Response.Header.Set("Access-Control-Allow-Origin", "*")
 	json.NewEncoder(ctx).Encode(rta)
-}
-
-// GetItemsMod : modificacion para que funcione con vuejs
-func GetItemsMod() Rta {
-	// Connect to the "bank" database.
-	db, err := sql.Open("postgres", "postgresql://daviddb@localhost:26257/retobd?sslmode=disable")
-	if err != nil {
-		log.Fatal("error connecting to the database: ", err)
-	}
-	rows, err := db.Query("SELECT dominio FROM busquedas")
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer rows.Close()
-	fmt.Println("Initial urls:")
-	var items []string
-	for rows.Next() {
-		var dominio string
-		if err := rows.Scan(&dominio); err != nil {
-			log.Fatal(err)
-		}
-		items = append(items, dominio)
-		fmt.Printf("%s\n", dominio)
-	}
-	rta := Rta{items}
-	return rta
 }
 
 // InsertItems inserta una busqueda en la tabla busquedas de la base de datos.

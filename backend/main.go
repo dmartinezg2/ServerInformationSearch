@@ -19,14 +19,4 @@ func main() {
 	s := app.NewServer()
 	s.Init(port) //El backend corre en el puerto 8000
 	s.Start()
-
-	// reader := bufio.NewReader(os.Stdin)
-	// fmt.Print("\t", "Buscador informacion de dominios", "\n")
-	// fmt.Print("Ingrese el URL de la pagina que quiere investigar: ")
-	// dominio, _ := reader.ReadString('\n')
-	// dominio = strings.TrimSuffix(dominio, "\r\n")
-	// dominio = strings.TrimSuffix(dominio, " ")
-	// fmt.Println("Investigando la informacion del dominio: ", dominio)
-	// s.AsignarDominio(dominio)
-
 }
