@@ -26,9 +26,13 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
 # In the Backend folder
+
 ###You will have to change the CockroachDB credentials for personal ones and update the references in persistence.go file.
+
 Aditionally you will have to create the table in the DB so it matches the queries done in this file. There are three columns all Strings; domnio, grade and dateVisited
+
 ###Run the Go app
 ```
 go run .
