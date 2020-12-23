@@ -34,7 +34,26 @@
                                 <b-button v-b-toggle.collapse-1-inner size="sm">Información de los servidores</b-button>
                                   <b-collapse id="collapse-1-inner" class="mt-2">
                                     <b-card>
-                                      <label class="label">servers: {{ servers }}</label>
+                                      <table class="table">
+                                        <thead>
+                                          <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">address</th>
+                                            <th scope="col">SSL grade</th>
+                                            <th scope="col">Country</th>
+                                            <th scope="col">Owner</th>
+                                          </tr>
+                                        </thead>
+                                          <tbody v-for="(server, index) in servers" :key="server.id"> 
+                                            <tr>
+                                              <th scope="row">{{index+1}}</th>
+                                              <td>{{server.addres}}</td>
+                                              <td>{{server.ssl_grade}}</td>
+                                              <td>{{server.country}}</td>
+                                              <td>{{server.owner}}</td>
+                                            </tr>                                  
+                                          </tbody>
+                                      </table>
                                     </b-card>
                                   </b-collapse>
                           </b-card>
@@ -88,7 +107,7 @@ export default {
 
   data: function() {
     return {
-      servers: "", serverschange : "", sslgrade:"", prevgrade:"", logo:"",title:"",isdown:"",
+      servers: [], serverschange : "", sslgrade:"", prevgrade:"", logo:"",title:"",isdown:"",
       domain: "", items:"" , show: true, mostrar:true
     }
   },

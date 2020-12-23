@@ -23,7 +23,7 @@ func DefinirURL(url string) {
 
 //Server Estructura de un servidor visitado
 type Server struct {
-	Address  string `json:"addres"`
+	Address  string `json:"address"`
 	SslGrade string `json:"ssl_grade"`
 	Country  string `json:"country"`
 	Owner    string `json:"owner"`
