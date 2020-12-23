@@ -1,4 +1,4 @@
-# finder
+# Frontend
 
 ## Project setup
 ```
