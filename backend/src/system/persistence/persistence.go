@@ -2,13 +2,11 @@ package persistence
 
 import (
 	"database/sql"
-	"encoding/json"
 	"fmt"
 	"log"
 	"time"
 
 	_ "github.com/lib/pq"
-	"github.com/valyala/fasthttp"
 )
 
 //informacion para desplegar el historial de busquedas
@@ -22,15 +20,22 @@ type Rta struct {
 }
 
 
+//func DBconnect()(*DB, error){
+//	db, err := sql.Open("postgres", "postgresql://daviddb@localhost:26257/retobd?sslmode=disable")
+//	if err != nil {
+//		log.Fatal("error connecting to the database: ", err)
+//	}
+//	return db,err
+//}
 
 //GetItems : busca todos los dominios buscados en la base de datos.
-func GetItems(ctx *fasthttp.RequestCtx) {
+func GetItems()Rta {
 	// Connect to the "bank" database.
 	db, err := sql.Open("postgres", "postgresql://daviddb@localhost:26257/retobd?sslmode=disable")
 	if err != nil {
 		log.Fatal("error connecting to the database: ", err)
 	}
-	rows, err := db.Query("SELECT dominio, dateVisited FROM busquedas")
+	rows, err := db.Query("SELECT dominio, dateVisited FROM busquedas ORDER BY dateVisited DESC")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -46,9 +51,7 @@ func GetItems(ctx *fasthttp.RequestCtx) {
 		fmt.Printf("%s\n", dominio)
 	}
 	rta := Rta{items}
-	ctx.Response.Header.Set("Content-Type", "application/json; charset=UTF-8")
-	ctx.Response.Header.Set("Access-Control-Allow-Origin", "*")
-	json.NewEncoder(ctx).Encode(rta)
+	return rta
 }
 
 // InsertItems inserta una busqueda en la tabla busquedas de la base de datos.

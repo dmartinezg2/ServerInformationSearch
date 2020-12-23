@@ -118,7 +118,7 @@ func sslValue(param string) int {
 	return rta
 }
 
-//AllServers : funcion que procesa la informacion del dominio ingresado
+//Endpoint1: AllServers : funcion que procesa la informacion del dominio ingresado
 func AllServers(ctx *fasthttp.RequestCtx) {
 	fmt.Println("Endpoint Hit: Servidores ")
 	//llama al metodo de la clase lectorApi que devulve el json con la info del dominio
@@ -174,4 +174,13 @@ func AllServers(ctx *fasthttp.RequestCtx) {
 	ctx.Response.Header.Set("Access-Control-Allow-Origin", "*")
 
 	json.NewEncoder(ctx).Encode(dominio)
+}
+
+//Endpoint2: Devuelve el historial de busquedas que se han hecho
+func HistorialBusquedas(ctx *fasthttp.RequestCtx){
+	fmt.Println("Endpoint Hit: Historial ")
+	rta := persistence.GetItems()
+	ctx.Response.Header.Set("Content-Type", "application/json; charset=UTF-8")
+	ctx.Response.Header.Set("Access-Control-Allow-Origin", "*")
+	json.NewEncoder(ctx).Encode(rta)
 }

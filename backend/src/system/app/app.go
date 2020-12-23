@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 
-	persistence "../persistence"
 	responseManager "../responsemanager"
 	"github.com/buaazp/fasthttprouter"
 	"github.com/valyala/fasthttp"
@@ -66,5 +65,5 @@ func Endpoint1(ctx *fasthttp.RequestCtx) {
 func Endpoint2(ctx *fasthttp.RequestCtx) {
 	fmt.Println("Endpoint 2 HIT")
 
-	persistence.GetItems(ctx)
+	responseManager.HistorialBusquedas(ctx)
 }
