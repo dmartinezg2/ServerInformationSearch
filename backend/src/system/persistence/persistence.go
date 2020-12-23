@@ -11,10 +11,17 @@ import (
 	"github.com/valyala/fasthttp"
 )
 
+//informacion para desplegar el historial de busquedas
+type Historial struct {
+	Dominio  string `json:"url"`
+	DateVisited string `json:"date_visited"`
+}
 //Rta la estrucutra de respuesta del endpoint 2 de la pagina.
 type Rta struct {
-	Items []string `json:"items"`
+	Items []Historial `json:"items"`
 }
+
+
 
 //GetItems : busca todos los dominios buscados en la base de datos.
 func GetItems(ctx *fasthttp.RequestCtx) {
@@ -23,19 +30,19 @@ func GetItems(ctx *fasthttp.RequestCtx) {
 	if err != nil {
 		log.Fatal("error connecting to the database: ", err)
 	}
-	rows, err := db.Query("SELECT dominio FROM busquedas")
+	rows, err := db.Query("SELECT dominio, dateVisited FROM busquedas")
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer rows.Close()
 	fmt.Println("Initial urls:")
-	var items []string
+	var items []Historial
 	for rows.Next() {
-		var dominio string
-		if err := rows.Scan(&dominio); err != nil {
+		var dominio, dateVisited string 
+		if err := rows.Scan(&dominio,&dateVisited); err != nil {
 			log.Fatal(err)
 		}
-		items = append(items, dominio)
+		items = append(items, Historial{dominio, dateVisited})
 		fmt.Printf("%s\n", dominio)
 	}
 	rta := Rta{items}

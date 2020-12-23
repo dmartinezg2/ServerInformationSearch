@@ -65,10 +65,22 @@
                         <b-overlay :show="mostrar" rounded="sm">
                           <b-card title="Dominios buscados" :aria-hidden="mostrar ? 'true' : null">
                         
-                               <p class="card-text">Dominios</p>
-                                <b-col cols="20" class="text-left">
-                                <div> <b-list-group-item>Buscados : {{ items }}</b-list-group-item> </div>
-                                </b-col>
+                            <table class="table">
+                              <thead>
+                                <tr>
+                                  <th scope="col">#</th>
+                                  <th scope="col">URL del dominio</th>
+                                  <th scope="col">Fecha visitada</th>
+                                </tr>
+                              </thead>
+                                <tbody v-for="(item, index) in items" :key="item.id"> 
+                                  <tr>
+                                    <th scope="row">{{index+1}}</th>
+                                    <td>{{item.url}}</td>
+                                    <td>{{item.date_visited}}</td>
+                                  </tr>                                  
+                                </tbody>
+                            </table>
                               
                           </b-card>
                        </b-overlay>
