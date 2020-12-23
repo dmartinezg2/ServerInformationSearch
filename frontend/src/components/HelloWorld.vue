@@ -38,7 +38,7 @@
                                         <thead>
                                           <tr>
                                             <th scope="col">#</th>
-                                            <th scope="col">address</th>
+                                            <th scope="col">IP Address</th>
                                             <th scope="col">SSL grade</th>
                                             <th scope="col">Country</th>
                                             <th scope="col">Owner</th>
@@ -47,7 +47,7 @@
                                           <tbody v-for="(server, index) in servers" :key="server.id"> 
                                             <tr>
                                               <th scope="row">{{index+1}}</th>
-                                              <td>{{server.addres}}</td>
+                                              <td>{{server.address}}</td>
                                               <td>{{server.ssl_grade}}</td>
                                               <td>{{server.country}}</td>
                                               <td>{{server.owner}}</td>
